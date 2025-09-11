@@ -1,90 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passe e Repassa - Semana da Informática</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  body { font-family: 'Roboto', sans-serif; margin:0; }
-
-  /* Tela Inicial */
-  #telaInicial {
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    height: 100vh; text-align:center;
-    background: linear-gradient(to bottom, #74ebd5, #ACB6E5);
-  }
-  #telaInicial h1 { font-size: 4rem; font-weight: 700; color: #00d1b2; text-shadow: 3px 3px 10px rgba(0,0,0,0.2); margin-bottom:20px;}
-  #telaInicial h2 { font-size: 2rem; font-weight: 500; color: #ff872c; margin-bottom:40px;}
-  #btnComecar { padding:20px 40px; font-size:1.5rem; box-shadow:0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s;}
-  #btnComecar:hover { transform: scale(1.05); }
-  #btnComecar:active { transform: scale(0.95); }
-
-  /* Tela Escolha Time */
-  #telaEscolhaTime {
-    display:none; flex-direction: column; justify-content: center; align-items: center;
-    height:100vh; text-align:center;
-    background: linear-gradient(to bottom, #d4fc79, #96e6a1);
-  }
-  #telaEscolhaTime h2 { font-size:2.5rem; font-weight:700; color:#ff872c; margin-bottom:40px;}
-  #telaEscolhaTime .button { font-size:1.5rem; padding:20px 40px; }
-
-  /* Game */
-  .question-card {
-    margin: 40px auto; padding:30px; border-radius:15px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.3);
-    background-color:#fff; max-width:600px; transition: transform 0.2s;
-  }
-  .question-card:hover { transform: scale(1.02); }
-  .option-button { margin:10px 0; width:100%; font-size:1.1em; padding:15px; }
-  .progress-container { width:100%; background-color:#eee; border-radius:10px; height:20px; overflow:hidden; margin-bottom:15px;}
-  .progress-bar { height:100%; background-color:#00d1b2; width:100%; transition: width 0.1s linear; }
-  .scoreboard { margin-top:20px; font-size:1.2em; font-weight:bold; text-align:center; }
-  .control-buttons { margin-top:20px; text-align:center; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passe e Repassa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .game-card {
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .score-box {
+      border-radius: 10px;
+      padding: 10px;
+      color: #fff;
+    }
+    .score-team1 {
+      background-color: #48c78e; /* verde */
+    }
+    .score-team2 {
+      background-color: #ff8c42; /* laranja */
+    }
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .option-button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Tela Inicial -->
-<div id="telaInicial">
-  <h1>Semana da Informática</h1>
-  <h2>Passe e Repassa</h2>
-  <button id="btnComecar" class="button is-primary is-large">Começar Jogo</button>
-</div>
+  <section class="section">
+    <div class="container">
+      <div class="card game-card">
+        <div class="card-content">
 
-<!-- Tela de Escolha de Time -->
-<div id="telaEscolhaTime">
-  <h2>Escolha qual time irá responder</h2>
-  <div style="display:flex; gap:20px;">
-    <button id="btnTime1" class="button is-success is-large">Time 1</button>
-    <button id="btnTime2" class="button is-warning is-large">Time 2</button>
-  </div>
-</div>
+          <!-- Título -->
+          <h1 class="title has-text-centered mb-5">
+            <i class="fa-solid fa-gamepad"></i> Passe e Repassa
+          </h1>
 
-<!-- Game -->
-<div id="game" class="question-card" role="main" style="display:none;">
-  <h3 id="timeAtual" class="title is-5 has-text-centered" aria-live="polite"></h3>
+          <!-- Placar -->
+          <div class="columns is-centered mb-5">
+            <div class="column has-text-centered">
+              <div class="score-box score-team1">
+                <p class="has-text-weight-bold">Time 1</p>
+                <p id="pontuacao1" class="is-size-4">0</p>
+              </div>
+            </div>
+            <div class="column has-text-centered">
+              <div class="score-box score-team2">
+                <p class="has-text-weight-bold">Time 2</p>
+                <p id="pontuacao2" class="is-size-4">0</p>
+              </div>
+            </div>
+          </div>
 
-  <div class="progress-container" aria-label="Tempo restante">
-    <div id="progressBar" class="progress-bar"></div>
-  </div>
+          <!-- Pergunta -->
+          <div class="box has-background-light">
+            <p id="pergunta" class="question-text">Clique em "Iniciar" para começar!</p>
+            <div id="opcoes" class="buttons mt-3"></div>
+            <p id="timeAtual" class="has-text-centered mt-4 has-text-weight-semibold"></p>
+          </div>
 
-  <h3 id="pergunta" class="title is-4 has-text-centered" aria-live="polite"></h3>
-  <div id="opcoes" class="buttons is-flex is-flex-direction-column" role="group" aria-label="Opções de resposta"></div>
+          <!-- Escolher time -->
+          <div class="buttons is-centered mt-4">
+            <button id="btnTime1" class="button is-success is-medium">
+              <i class="fa-solid fa-users"></i> Time 1
+            </button>
+            <button id="btnTime2" class="button is-warning is-medium">
+              <i class="fa-solid fa-users"></i> Time 2
+            </button>
+          </div>
 
-  <div class="scoreboard">
-    <p>Pontuação Time 1: <span id="pontuacao1">0</span></p>
-    <p>Pontuação Time 2: <span id="pontuacao2">0</span></p>
-  </div>
+          <!-- Botões principais -->
+          <div class="buttons is-centered mt-4">
+            <button id="btnIniciar" class="button is-primary is-medium">
+              <i class="fa-solid fa-play"></i> Iniciar
+            </button>
+            <button id="btnResetar" class="button is-danger is-medium">
+              <i class="fa-solid fa-rotate-right"></i> Resetar
+            </button>
+          </div>
 
-  <div class="control-buttons">
-    <button id="btnProxima" class="button is-warning is-medium">Próxima Pergunta</button>
-    <button id="btnResetar" class="button is-danger is-medium">Resetar Jogo</button>
-  </div>
-</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script src="questoes.js"></script>
-<script src="funcoes.js"></script>
+  <script src="questao.js"></script>
+  <script src="funcoes.js"></script>
 </body>
 </html>
