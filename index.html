@@ -13,30 +13,69 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
+
+    /* Cartão do jogo */
     .game-card {
       border-radius: 15px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
       padding: 20px;
+      width: 100%;
+      max-width: 600px;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
+    @media (max-width: 768px) {
+      .game-card { min-height: 480px; }
+    }
+    @media (max-width: 500px) {
+      .game-card { min-height: 440px; }
+    }
+
     .score-box {
       border-radius: 10px;
       padding: 10px;
       color: #fff;
     }
-    .score-team1 {
-      background-color: #48c78e; /* verde */
+    .score-team1 { background-color: #48c78e; }
+    .score-team2 { background-color: #ff8c42; }
+
+    /* Área da pergunta */
+    .question-box {
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
     }
-    .score-team2 {
-      background-color: #ff8c42; /* laranja */
+    @media (max-width: 768px) {
+      .question-box { min-height: 170px; }
     }
+    @media (max-width: 500px) {
+      .question-box { min-height: 150px; }
+    }
+
     .question-text {
       font-size: 1.2rem;
       font-weight: 600;
+      margin-bottom: 15px;
+      word-wrap: break-word;
+    }
+
+    /* Botões de resposta ocupando 100% e empilhados */
+    #opcoes {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;           /* espaço entre botões */
     }
     .option-button {
       width: 100%;
-      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -68,10 +107,11 @@
             </div>
           </div>
 
-          <!-- Pergunta -->
-          <div class="box has-background-light">
+          <!-- Pergunta + Respostas -->
+          <div class="box has-background-light question-box">
             <p id="pergunta" class="question-text">Clique em "Iniciar" para começar!</p>
-            <div id="opcoes" class="buttons mt-3"></div>
+            <!-- REMOVIDA a classe 'buttons' para não colocar em linha -->
+            <div id="opcoes" class="mt-3"></div>
             <p id="timeAtual" class="has-text-centered mt-4 has-text-weight-semibold"></p>
           </div>
 

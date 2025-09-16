@@ -27,7 +27,7 @@ function embaralhar(array) {
 
 function mostrarPergunta() {
   if (indiceAtual >= questoesSorteadas.length) {
-    perguntaEl.innerText = "Fim do jogo!";
+    perguntaEl.innerText = "🎉 Fim do jogo!";
     opcoesEl.innerHTML = "";
     timeEl.innerText = `Placar final - Time 1: ${pontuacao1} | Time 2: ${pontuacao2}`;
     return;
@@ -40,12 +40,15 @@ function mostrarPergunta() {
   // embaralha alternativas
   const opcoesEmbaralhadas = embaralhar(q.opcoes);
 
-  opcoesEmbaralhadas.forEach(opcao => {
-    const btn = document.createElement("button");
-    btn.classList.add("button", "is-link", "option-button");
-    btn.innerText = opcao;
-    btn.onclick = () => verificarResposta(opcao);
-    opcoesEl.appendChild(btn);
+  // Adiciona cada opção com atraso de 2s para criar suspense
+  opcoesEmbaralhadas.forEach((opcao, index) => {
+    setTimeout(() => {
+      const btn = document.createElement("button");
+      btn.classList.add("button", "is-link", "option-button");
+      btn.innerText = opcao;
+      btn.onclick = () => verificarResposta(opcao, btn);
+      opcoesEl.appendChild(btn);
+    }, index * 2000); // cada botão aparece 2 s depois do anterior
   });
 
   if (timeAtual) {
@@ -55,23 +58,44 @@ function mostrarPergunta() {
   }
 }
 
-function verificarResposta(resposta) {
+function verificarResposta(resposta, botao) {
   if (!timeAtual) {
     alert("Escolha primeiro o time que vai responder!");
     return;
   }
 
   const q = questoesSorteadas[indiceAtual];
+  const botoes = document.querySelectorAll(".option-button");
+
+  // desabilita os botões após resposta
+  botoes.forEach(b => b.disabled = true);
 
   if (resposta === q.correta) {
+    botao.classList.remove("is-link");
+    botao.classList.add("is-success"); // verde
     if (timeAtual === 1) pontuacao1++;
     else pontuacao2++;
+  } else {
+    botao.classList.remove("is-link");
+    botao.classList.add("is-danger"); // vermelho
+
+    // mostra qual era a correta
+    botoes.forEach(b => {
+      if (b.innerText === q.correta) {
+        b.classList.remove("is-link");
+        b.classList.add("is-success");
+      }
+    });
   }
 
   atualizarPontuacao();
-  indiceAtual++;
-  timeAtual = null;
-  mostrarPergunta();
+
+  // espera 1,5s antes da próxima
+  setTimeout(() => {
+    indiceAtual++;
+    timeAtual = null;
+    mostrarPergunta();
+  }, 1500);
 }
 
 function atualizarPontuacao() {
@@ -87,6 +111,7 @@ btnIniciar.addEventListener("click", () => {
   timeAtual = null;
   atualizarPontuacao();
   mostrarPergunta();
+  btnIniciar.style.display = "none";
 });
 
 btnResetar.addEventListener("click", () => {
@@ -98,6 +123,7 @@ btnResetar.addEventListener("click", () => {
   perguntaEl.innerText = "Clique em 'Iniciar' para começar!";
   opcoesEl.innerHTML = "";
   timeEl.innerText = "";
+  btnIniciar.style.display = "inline-block";
 });
 
 btnTime1.addEventListener("click", () => {
